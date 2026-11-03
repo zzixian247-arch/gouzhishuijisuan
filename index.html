@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#edf2f8">
+  <meta name="description" content="输入车价、优惠与置换补贴，实时测算车辆购置税和购车支出。支持2024—2027年新能源乘用车减免与完整计算明细。">
+  <meta name="color-scheme" content="light">
+  <title>购置税 · 购车，心中有数。</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%23e5edf8%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%231d2637%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m17%2025%204-10h22l4%2010M13%2025h38v24H13zM18%2049v5m28-5v5m-27-20h5m16%200h5m-18%208h10%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E%0A">
+  <style>
+:root{--ink:#202631;--muted:#768091;--blue:#0675ef;--line:rgba(95,117,150,.16);--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.22,1.45,.48,1);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);font-synthesis:none;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scrollbar-gutter:stable;background:#edf2f8;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;min-width:280px;min-height:100vh}button,input,a{-webkit-tap-highlight-color:transparent}button,input{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}button{border:0}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(0,112,235,.65);outline-offset:4px}button:focus:not(:focus-visible){outline:none}button svg,a svg{pointer-events:none}p,h1,h2,h3{margin:0}svg{display:block}input{min-width:0}input::-ms-clear{display:none}[hidden]{display:none!important}.icon{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.icon-definitions{position:absolute;width:0;height:0;overflow:hidden}.shell{width:min(1120px,calc(100% - 80px));margin-inline:auto}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip-link{position:fixed;top:12px;left:20px;background:#fff;padding:12px 18px;border-radius:14px;z-index:30;transform:translateY(-160%)}.skip-link:focus{transform:translateY(0)}
+/* A quiet landscape gives the floating controls light to bend. */
+.ambient{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 47% 35%,#fafcff 0,rgba(247,250,255,.85) 35%,transparent 72%),linear-gradient(145deg,#e2ebf8 0%,#edf2f8 43%,#e4edfa 100%)}.ambient-orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.4}.orb-one{width:70vw;height:60vw;left:-40vw;top:30vh;background:#c7ddfb}.orb-two{width:55vw;height:65vw;right:-34vw;top:-25vh;background:#c5dafa}.ambient-arc{position:absolute;width:160vw;height:100vw;border-radius:50%;border:1px solid rgba(255,255,255,.72);box-shadow:0 -18px 75px rgba(255,255,255,.48),inset 0 24px 90px rgba(255,255,255,.35);background:linear-gradient(170deg,rgba(255,255,255,.27),transparent 35%);transform:rotate(-26deg)}.arc-one{left:-35vw;top:57vh}.arc-two{width:125vw;height:75vw;top:-72vw;left:18vw;transform:rotate(-38deg);box-shadow:0 26px 80px #c5d7ee55,inset 0 -18px 50px #ffffff70}
+/* The material is confined to the floating functional layer. */
+.glass{position:relative;isolation:isolate;background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(244,249,255,.23) 52%,rgba(255,255,255,.38));border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 25px -10px rgba(51,82,126,.24),inset 0 1px 1px #fff,inset 0 -1px 2px rgba(255,255,255,.72),inset 1px 0 1px #fff9;-webkit-backdrop-filter:blur(18px) saturate(155%);backdrop-filter:blur(18px) saturate(155%)}.glass:before{content:"";position:absolute;inset:1px;border-radius:inherit;pointer-events:none;z-index:-1;background:linear-gradient(118deg,#ffffff55,transparent 24%,transparent 76%,#ffffff45);box-shadow:inset 0 0 0 1px #ffffff35}.glass:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;background:radial-gradient(ellipse 160px 100px at var(--glow-x,50%) var(--glow-y,50%),rgba(255,255,255,.9),rgba(255,255,255,.06) 70%,transparent);transition:opacity .35s ease}.glass:hover:after,.glass:focus-within:after{opacity:.75}.interactive-glass{position:relative;isolation:isolate;overflow:hidden;--lift:0px;--scale:1;--rx:0deg;--ry:0deg;transform:perspective(900px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--scale));transition:transform .45s var(--spring),box-shadow .35s ease,background .3s ease;transform-origin:center;will-change:auto}.interactive-glass:hover{--lift:-1px}.interactive-glass.is-pressed{--scale:.975;--lift:1px;transition-duration:.12s;transition-timing-function:ease-out}.interactive-glass.is-pressed:after{opacity:1}.press-ripple{position:absolute;z-index:-1;width:12px;height:12px;margin:-6px;border-radius:50%;background:radial-gradient(circle,#fff8,transparent 70%);pointer-events:none;animation:glass-ripple .6s ease-out forwards}.primary-button .press-ripple{background:radial-gradient(circle,#ffffffb0,transparent 70%)}@keyframes glass-ripple{to{transform:scale(24);opacity:0}}
+.header{position:relative;padding-top:24px;z-index:5}.navbar{display:flex;align-items:center;justify-content:space-between;min-height:62px;border-radius:100px;padding:10px 25px}.brand{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:650;letter-spacing:.02em}.brand-icon{width:30px;height:30px;stroke-width:1.45}.nav-links{position:absolute;left:50%;transform:translateX(-50%);display:grid;grid-template-columns:repeat(2,86px);padding:4px;isolation:isolate}.nav-lens{position:absolute;inset:4px auto 4px 4px;width:86px;border-radius:99px;background:linear-gradient(160deg,#ffffffb0,#ffffff33);border:1px solid #fff9;box-shadow:inset 0 1px 2px #fff,0 3px 8px #506e921a;z-index:-1;transition:transform .48s var(--spring)}.nav-links[data-active="explanation"] .nav-lens{transform:translateX(86px)}.nav-link{font-size:14px;text-align:center;padding:7px 18px;color:#667184;border-radius:99px;transition:color .2s}.nav-link.active{color:#242c38;font-weight:600}.help-button{width:30px;height:30px;border:1.4px solid #455367;border-radius:50%;display:grid;place-items:center;background:transparent;font-size:19px;font-weight:500;line-height:1}.help-button:hover{background:#fff8}
+.hero{text-align:center;padding:43px 0 34px}.eyebrow{font-size:13px;letter-spacing:.09em;color:#7d8695;font-weight:500;margin-bottom:12px}.hero h1{font-size:clamp(34px,4.9vw,57px);line-height:1.23;font-weight:650;letter-spacing:-.045em;color:#1e2530}.period{letter-spacing:-.3em}.hero-description{color:#7c8593;font-size:16px;line-height:1.65;margin-top:15px;letter-spacing:.02em}.hero-description span{white-space:nowrap}.calculator{scroll-margin-top:24px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.vehicle-switch{display:grid;grid-template-columns:1fr 1fr;width:278px;padding:5px;border-radius:99px;overflow:hidden}.segment-lens{position:absolute;inset:5px auto 5px 5px;width:calc((100% - 10px)/2);border:1px solid #ffffffd9;border-radius:99px;background:linear-gradient(150deg,#ffffffd0,#ffffff48);box-shadow:inset 0 1px 3px #fff,0 3px 7px #38587b18;transition:transform .52s var(--spring);z-index:-1}.vehicle-switch[data-selected="nev"] .segment-lens{transform:translateX(100%)}.segment-button{position:relative;background:transparent;color:#687586;font-size:14px;min-height:36px;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:99px;transition:color .3s}.segment-button.active{color:var(--ink);font-weight:600}.selection-dot{height:7px;width:7px;background:#277cfa;border-radius:50%;box-shadow:0 0 8px #277cfa18;transition:transform .35s var(--spring),opacity .2s}.segment-button:not(.active) .selection-dot{transform:scale(0);opacity:0;width:0;margin-right:-9px}.leaf-icon{width:17px;height:17px;transition:color .3s}.segment-button.active .leaf-icon{color:#38836d}.date-control{display:flex;align-items:center;gap:10px;border-radius:99px;padding:10px 15px;font-size:12px;min-height:48px;cursor:pointer}.date-control>.icon{width:19px;height:19px}.date-control>span{white-space:nowrap;color:#566274}.date-control input{border:0;background:transparent;width:136px;font-size:13px;outline:none;font-variant-numeric:tabular-nums;cursor:pointer}.date-control input::-webkit-calendar-picker-indicator{width:14px;height:14px;opacity:.42;margin-left:4px;cursor:pointer}.date-control:focus-within{outline:3px solid #0070eb40;outline-offset:3px}.date-error{text-align:right;margin-top:-10px;margin-bottom:14px;color:#b73e4c;font-size:12px}
+.calculator-panel{display:grid;grid-template-columns:47% 53%;position:relative;border-radius:32px;padding:34px 0;background:linear-gradient(125deg,#ffffffed,#ffffffd6 70%,#fbfcffed);border:1px solid #fff;box-shadow:0 22px 50px -22px rgba(80,108,148,.24),0 3px 16px -8px #8096ae12}.input-section{padding:0 34px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.section-heading h2{font-size:21px;font-weight:620;letter-spacing:-.035em}.text-button{font-size:12px;color:var(--blue);background:transparent;padding:5px 0;border-radius:5px;transition:opacity .2s,transform .2s}.text-button:hover{opacity:.68}.text-button:active{transform:scale(.94)}.muted-button{color:#8a93a2;font-size:11px}.field{display:grid;grid-template-columns:130px minmax(0,1fr);align-items:center;column-gap:14px;row-gap:6px;margin-bottom:22px}.field label{font-size:14px;line-height:1.5;white-space:nowrap}.tag{display:inline-block;font-size:10px;line-height:1.5;color:#8a929f;background:#e9ecf2;border-radius:99px;padding:0 6px;vertical-align:1px;margin-left:4px}.money-input{position:relative;isolation:isolate;display:flex;align-items:center;gap:6px;min-height:48px;padding:9px 14px;background:#f0f3f85c;border:1px solid #b4c0d54f;border-radius:13px;transition:background .25s,border-color .25s,box-shadow .25s}.money-input>span:first-child{font-size:16px;color:#515c6d}.money-input input{width:100%;border:0;outline:none!important;background:transparent;text-align:right;font-size:22px;line-height:1.15;font-weight:450;letter-spacing:-.035em;font-variant-numeric:tabular-nums;padding:0}.money-input:hover{background:#f3f6fb;border-color:#a7b5cb80}.money-input:focus-within{background:#fff;border-color:#338dff88;box-shadow:0 0 0 3px #4798ff16}.field-focus{position:absolute;inset:0;border-radius:inherit;pointer-events:none}.field-error{font-size:11px;color:#bd4252;line-height:1.55;grid-column:1/-1}.field[data-invalid="true"] .money-input{border-color:#d66c78;background:#fff7f7}.subsidy-settings{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:1px}.small-label{font-size:11px;color:#818b9b}.subsidy-switch{display:grid;grid-template-columns:1fr 1fr;isolation:isolate;position:relative;background:#edf0f65c;border-radius:9px;border:1px solid #d5dce657;padding:3px}.subsidy-switch button{background:transparent;border-radius:7px;padding:6px 9px;color:#828b99;white-space:nowrap;font-size:10px;transition:color .2s,transform .2s}.subsidy-switch button.active{color:#48576d}.subsidy-switch button:active{transform:scale(.96)}.subsidy-lens{position:absolute;z-index:-1;inset:3px auto 3px 3px;width:calc((100% - 6px)/2);border-radius:7px;background:#fff;box-shadow:0 1px 4px #394f6810;transition:transform .4s var(--spring)}.subsidy-switch[data-selected="invoice"] .subsidy-lens{transform:translateX(100%)}.field-hint{font-size:10px;line-height:1.7;color:#8b94a2;margin-top:9px;min-height:18px}.eligibility-panel{margin-top:17px;padding:13px 14px;border:1px solid #d8e5f4;border-radius:12px;background:#f4f8fd;animation:eligibility-in .3s var(--ease)}.eligibility-label{display:flex;gap:8px;align-items:center;cursor:pointer;font-size:11px}.eligibility-label input{position:absolute;opacity:0;width:16px;height:16px}.checkbox-visual{border:1px solid #abbacf;border-radius:5px;background:#fff;display:grid;place-items:center;width:17px;height:17px;flex-shrink:0;transition:background .2s,border-color .2s}.checkbox-visual .icon{width:12px;height:12px;color:#fff;opacity:0;stroke-width:2.6}.eligibility-label input:checked+.checkbox-visual{background:var(--blue);border-color:var(--blue)}.eligibility-label input:checked+.checkbox-visual .icon{opacity:1}.eligibility-label input:focus-visible+.checkbox-visual{outline:3px solid #0070eb50;outline-offset:3px}.eligibility-panel>p{font-size:10px;color:#8794a6;line-height:1.65;margin-top:7px}.invoice-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);margin-top:27px;padding-top:19px;font-size:12px}.invoice-summary>div:first-child{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.invoice-value{display:flex;align-items:center;gap:14px;white-space:nowrap}.invoice-value strong{font-size:18px;font-weight:600;letter-spacing:-.025em;font-variant-numeric:tabular-nums}.invoice-status{font-size:9px;border-radius:5px;padding:2px 4px;background:#eaf2ff;color:#4583d2}
+.result-section{border-left:1px solid var(--line);padding:0 38px;position:relative;display:flex;flex-direction:column}.result-heading{margin-bottom:13px}.result-heading h2{font-size:20px}.live-status{display:flex;align-items:center;gap:8px;font-size:10px;color:#8a94a3;white-space:nowrap}.live-status>span{width:6px;height:6px;border-radius:50%;background:#3f88ff;box-shadow:0 0 0 3px #3f88ff09}.primary-amount{display:flex;align-items:baseline;gap:8px;font-size:clamp(42px,5.1vw,65px);font-weight:640;letter-spacing:-.065em;font-variant-numeric:tabular-nums;line-height:1.16;color:#171f2a;white-space:nowrap;min-height:76px}.primary-currency{font-size:.52em;font-weight:550;letter-spacing:-.04em}.primary-amount.compact{font-size:46px}.tax-rule{font-size:11px;color:#8d97a6;line-height:1.6;margin-top:5px;min-height:18px}.policy-note{font-size:10px;color:#597ca8;line-height:1.6;margin-top:8px}.breakdown{border-top:1px solid var(--line);padding-top:16px;margin-top:22px;font-size:12px;color:#5d6878;line-height:1.5;display:grid;gap:9px}.breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:15px}.breakdown>div>span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums;font-size:13px;color:#354154;letter-spacing:-.01em}.breakdown .relief-row{font-size:10px;color:#4d8b77;margin-top:-4px}.breakdown .relief-row>span:last-child{font-size:11px;color:#4d8b77}.secondary-result{border-top:1px solid var(--line);padding-top:15px;margin-top:19px}.secondary-label{font-size:11px;color:#697485}.secondary-amount{display:flex;align-items:baseline;gap:5px;margin-top:5px;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.04em}.secondary-amount>span{font-size:22px;font-weight:530}.secondary-amount strong{font-size:36px;font-weight:620;letter-spacing:-.04em;line-height:1.25}.secondary-amount.compact strong{font-size:28px}.budget-note{font-size:10px;color:#9aa2af;margin-top:5px;line-height:1.6}.result-actions{display:flex;justify-content:flex-end;margin-top:17px}.primary-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;border-radius:99px;padding:12px 20px;font-size:13px;font-weight:550;min-height:43px;overflow:hidden;color:#11529b;background:linear-gradient(145deg,rgba(220,238,255,.76),rgba(158,203,255,.42) 60%,rgba(205,229,255,.78));border:1px solid #fff;box-shadow:inset 0 1px 2px #fff,0 6px 16px -7px #4c8cd04a,inset 0 -1px 2px #abcdf55c}.primary-button:before{box-shadow:inset 0 0 0 1px #94c9ff35;background:linear-gradient(120deg,#ffffff5c,transparent 42%,#ffffff12)}.primary-button:hover{box-shadow:inset 0 1px 2px #fff,0 9px 22px -8px #4c8cd067,inset 0 -1px 2px #abcdf55c}.primary-button>.icon{width:18px;height:18px;stroke-width:1.5}.calculation-error{font-size:11px;line-height:1.7;color:#ba4354;margin-top:10px}
+.explanation{padding:37px 12px 0;scroll-margin-top:24px}.explanation-title{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}.explanation-title h2{font-size:19px;font-weight:620;letter-spacing:-.025em}.explanation-title>span{font-size:10px;color:#98a3b3}.faq-item{border-bottom:1px solid var(--line)}.faq-trigger{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;background:transparent;padding:17px 0;text-align:left;font-size:13px;font-weight:450;border-radius:6px;transition:color .2s}.faq-trigger:hover{color:var(--blue)}.plus{position:relative;width:16px;height:16px;flex-shrink:0;transition:transform .4s var(--ease)}.plus:before,.plus:after{content:"";position:absolute;width:12px;height:1.3px;background:currentColor;left:2px;top:7px}.plus:after{transform:rotate(90deg)}.faq-trigger[aria-expanded="true"] .plus{transform:rotate(45deg)}.faq-body{display:grid;grid-template-rows:0fr;visibility:hidden;opacity:0;transition:grid-template-rows .42s var(--ease),opacity .3s,visibility .42s}.faq-item.expanded .faq-body{grid-template-rows:1fr;visibility:visible;opacity:1}.faq-inner{overflow:hidden;min-height:0;font-size:12px;line-height:1.9;color:#748092;max-width:850px}.faq-inner>p{margin-bottom:12px}.faq-inner>p:last-child{padding-bottom:14px}.faq-inner strong{font-weight:550;color:#4a5d75}.formula{display:inline-block;padding:9px 16px;border-radius:10px;background:#ffffff80;margin:1px 0 12px;font-size:13px;color:#4c6e99;font-variant-numeric:tabular-nums}.inline-link{color:#2175d6;display:inline-block;margin-left:4px;text-underline-offset:3px}.inline-link:hover{text-decoration:underline}.policy-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 14px}.policy-grid>div{background:#ffffff70;border:1px solid #ffffffa0;border-radius:15px;padding:16px}.policy-grid strong{display:block;font-size:14px;margin:3px 0 5px}.policy-year{font-size:10px;letter-spacing:.04em;color:#5782ba}.policy-grid p{font-size:11px}.footer{padding:22px 12px 27px;color:#99a4b5;font-size:9px;line-height:1.9}.footer>div{display:flex;justify-content:space-between;margin-top:6px;color:#a2acbc;font-size:9px}
+/* Native dialogs retain keyboard focus and Escape behavior. */
+.is-dialog-open{overflow:hidden}.dialog{border:1px solid #fff;background:#f8fafff5;border-radius:28px;padding:27px 30px 30px;width:calc(100% - 40px);max-width:520px;color:var(--ink);box-shadow:0 30px 100px #2f4d7540;overflow:auto;max-height:calc(100dvh - 80px)}.dialog[open]{animation:dialog-in .32s var(--ease)}.dialog::backdrop{background:rgba(51,70,97,.2);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);animation:backdrop-in .3s ease}.dialog.is-closing{animation:dialog-out .16s ease forwards}.dialog.is-closing::backdrop{animation:backdrop-out .16s ease forwards}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.dialog-eyebrow{font-size:10px;letter-spacing:.04em;color:#8c99ac}.close-button{border-radius:50%;height:32px;width:32px;display:grid;place-items:center;padding:0;overflow:hidden;background:#ffffff90}.close-button>.icon{height:15px;width:15px}.dialog h2{font-size:27px;letter-spacing:-.04em;font-weight:620}.dialog-description{font-size:12px;line-height:1.85;color:#8591a3;margin-top:13px}.dialog-label{display:block;font-size:12px;margin:25px 0 9px}.dialog-money{min-height:58px;background:#fff}.dialog-money input{font-size:27px}.invoice-dialog-hint{font-size:10px;color:#96a0af;line-height:1.7;margin-top:12px}.dialog-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:28px}.secondary-button{background:transparent;font-size:11px;color:#8391a5;padding:8px 0;border-radius:5px}.secondary-button:hover{color:var(--blue)}.dialog .field-error{margin-top:7px}.detail-steps{margin-top:25px;display:grid;gap:21px}.detail-steps>div{display:flex;gap:15px}.step-index{font-size:10px;color:#7b9ac3;padding-top:3px;letter-spacing:.06em}.detail-steps h3{font-size:12px;font-weight:550;margin-bottom:4px}.detail-steps p{font-size:11px;line-height:1.75;color:#8c97a7;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.detail-steps .detail-relief{margin-top:4px;color:#548a76}.detail-total{border-top:1px solid var(--line);margin-top:24px;padding-top:19px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:11px;color:#6f7e93}.detail-total strong{font-size:25px;font-weight:600;letter-spacing:-.035em;color:#24344b;font-variant-numeric:tabular-nums}.dialog-footnote{margin-top:10px;font-size:9px;line-height:1.7;color:#9ba6b6}.copy-button{width:100%;margin-top:24px}.toast{position:fixed;z-index:50;left:50%;bottom:35px;transform:translate(-50%,15px);padding:12px 20px;border:1px solid #fff9;border-radius:99px;background:#f9fcffe8;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 8px 30px #415b7b1a;color:#435b7b;font-size:12px;opacity:0;pointer-events:none;white-space:nowrap;transition:transform .3s var(--ease),opacity .3s}.toast.visible{transform:translate(-50%,0);opacity:1}.noscript-message{position:fixed;bottom:0;left:0;right:0;padding:15px;background:#fff8e8;border-top:1px solid #e9d5b2;font-size:13px;text-align:center;z-index:100}
+/* Reveal: restrained distance, staggered timing, no changes to financial values. */
+.js .reveal{opacity:0;transform:translate3d(0,18px,0);filter:blur(5px);transition:opacity .7s var(--ease) var(--delay,0ms),transform .8s var(--ease) var(--delay,0ms),filter .7s var(--ease) var(--delay,0ms)}.js .reveal.is-visible{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}.js .calculator-panel.reveal{transform:translate3d(0,23px,0)}.js .calculator-panel.reveal.is-visible{transform:translate3d(0,0,0)}.header.reveal{transform:translate3d(0,7px,0)}@keyframes dialog-in{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes dialog-out{to{opacity:0;transform:translateY(10px) scale(.99)}}@keyframes backdrop-in{from{opacity:0}to{opacity:1}}@keyframes backdrop-out{to{opacity:0}}@keyframes eligibility-in{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1600px){.hero{padding-top:54px;padding-bottom:43px}.calculator-panel{padding-block:39px}.input-section{padding-inline:38px}.result-section{padding-inline:42px}.section-heading{margin-bottom:32px}.field{margin-bottom:25px}.invoice-summary{margin-top:32px}.explanation{padding-top:42px}}
+@media(max-width:1050px){.shell{width:calc(100% - 48px)}.input-section{padding-inline:25px}.result-section{padding-inline:28px}.field{grid-template-columns:100px minmax(0,1fr);gap:10px}.field label{font-size:12px}.money-input{padding-inline:10px}.money-input input{font-size:20px}.tag{font-size:9px}.primary-amount{font-size:54px;min-height:65px}.primary-amount.compact{font-size:36px}.secondary-amount strong{font-size:32px}.section-heading h2{font-size:19px}.invoice-value{gap:10px}.invoice-value strong{font-size:16px}.invoice-summary{font-size:11px}.subsidy-settings{flex-wrap:wrap;gap:6px}.field-hint{font-size:9px}.budget-note{font-size:9px}.breakdown{font-size:11px}.breakdown>div>span:last-child{font-size:12px}.hero h1{font-size:49px}}
+@media(max-width:780px){.shell{width:calc(100% - 40px)}.hero{padding:38px 0 30px}.hero h1{font-size:43px}.hero-description{font-size:14px}.navbar{padding-inline:19px;min-height:57px}.brand{font-size:16px;gap:9px}.brand-icon{height:26px;width:26px}.nav-links{grid-template-columns:repeat(2,65px)}.nav-lens{width:65px}.nav-links[data-active="explanation"] .nav-lens{transform:translateX(65px)}.nav-link{font-size:12px;padding:7px 12px}.help-button{width:25px;height:25px;font-size:16px}.calculator-panel{grid-template-columns:1fr 1fr;padding-block:28px;border-radius:28px}.input-section{padding-inline:23px}.result-section{padding-inline:23px}.field{grid-template-columns:1fr;gap:7px;margin-bottom:15px}.field label{font-size:11px}.money-input{min-height:43px}.money-input input{font-size:21px}.subsidy-settings{margin-top:15px}.subsidy-settings .small-label{font-size:10px}.subsidy-switch button{font-size:9px;padding-inline:6px}.primary-amount{font-size:42px;min-height:52px;gap:5px}.primary-amount.compact{font-size:31px}.section-heading{margin-bottom:22px}.section-heading h2{font-size:17px}.result-heading{align-items:baseline;flex-wrap:wrap;gap:7px;margin-bottom:15px}.live-status{font-size:8px}.live-status>span{width:5px;height:5px}.breakdown{margin-top:23px;gap:10px;font-size:10px}.breakdown>div>span:last-child{font-size:11px}.secondary-amount strong{font-size:28px}.secondary-amount>span{font-size:18px}.secondary-amount.compact strong{font-size:22px}.secondary-result{margin-top:22px;padding-top:20px}.budget-note{font-size:9px;max-width:210px}.result-actions{margin-top:auto;padding-top:24px}.primary-button{font-size:12px;padding:11px 17px;min-height:40px}.vehicle-switch{width:245px}.segment-button{font-size:12px;min-height:33px}.date-control{gap:7px;padding:10px 12px;min-height:45px}.date-control>span{font-size:10px}.date-control input{width:124px;font-size:11px}.date-control>.icon{width:17px;height:17px}.invoice-summary{margin-top:23px;align-items:flex-start}.invoice-value{align-items:flex-end;flex-direction:column;gap:1px}.invoice-value strong{font-size:15px}.invoice-summary .text-button{font-size:10px}.eligibility-panel{padding:10px}.eligibility-label{font-size:10px;align-items:flex-start}.eligibility-panel>p{font-size:9px}}
+@media(max-width:600px){.shell{width:calc(100% - 32px)}.header{padding-top:16px}.navbar{padding:9px 16px;min-height:53px}.brand{font-size:15px;gap:8px}.brand-icon{width:24px;height:24px}.nav-links{left:auto;right:49px;transform:none;grid-template-columns:repeat(2,52px)}.nav-lens{width:52px}.nav-links[data-active="explanation"] .nav-lens{transform:translateX(52px)}.nav-link{font-size:11px;padding:6px 8px}.help-button{width:23px;height:23px;font-size:15px}.hero{padding:34px 0 27px}.eyebrow{font-size:10px;letter-spacing:.08em;margin-bottom:12px}.hero h1{font-size:clamp(29px,8vw,39px);letter-spacing:-.055em}.hero-description{font-size:11px;line-height:1.7;margin-top:12px;letter-spacing:0}.toolbar{gap:10px;margin-bottom:17px;flex-wrap:wrap;align-items:center}.vehicle-switch{width:174px;padding:4px}.segment-lens{inset:4px auto 4px 4px;width:calc((100% - 8px)/2)}.segment-button{font-size:11px;gap:6px;min-height:32px}.selection-dot{width:5px;height:5px}.segment-button:not(.active) .selection-dot{margin-right:-6px}.leaf-icon{width:14px;height:14px}.date-control{min-height:42px;padding:8px 11px;gap:6px}.date-control>span{display:none}.date-control input{width:113px;font-size:10px}.date-control>.icon{width:15px;height:15px}.date-control input::-webkit-calendar-picker-indicator{width:12px;height:12px;margin-left:0}.calculator-panel{grid-template-columns:1fr;border-radius:26px;padding:26px 24px}.input-section{padding:0}.section-heading{margin-bottom:23px}.section-heading h2{font-size:19px}.muted-button{font-size:11px}.field{grid-template-columns:102px minmax(0,1fr);gap:12px;margin-bottom:18px}.field label{font-size:13px}.money-input{min-height:47px;padding-inline:13px}.money-input input{font-size:22px}.tag{margin-left:2px}.subsidy-settings{flex-wrap:nowrap;margin-top:3px}.small-label{font-size:10px}.subsidy-switch button{font-size:10px;padding:6px 9px}.field-hint{font-size:10px;margin-top:9px;min-height:0}.invoice-summary{margin-top:21px;padding-top:17px;align-items:center;font-size:12px}.invoice-value{flex-direction:row;align-items:center;gap:14px}.invoice-value strong{font-size:19px}.invoice-summary .text-button{font-size:12px}.result-section{border-left:0;border-top:1px solid var(--line);padding:24px 0 0;margin-top:24px}.result-heading{margin-bottom:11px;flex-wrap:nowrap;align-items:center}.result-heading h2{font-size:19px}.live-status{font-size:10px}.primary-amount{font-size:clamp(43px,12.8vw,60px);min-height:64px;gap:7px;letter-spacing:-.055em}.primary-amount.compact{font-size:36px}.tax-rule{font-size:11px;margin-top:4px}.breakdown{margin-top:20px;padding-top:16px;font-size:12px;gap:9px}.breakdown>div>span:last-child{font-size:13px}.secondary-result{margin-top:18px;padding-top:15px}.secondary-amount{margin-top:5px}.secondary-amount strong{font-size:35px}.secondary-amount>span{font-size:23px}.secondary-amount.compact strong{font-size:29px}.budget-note{font-size:10px;max-width:none}.result-actions{padding-top:0;margin-top:20px}.result-actions .primary-button{padding:11px 19px}.explanation{padding:31px 5px 0}.explanation-title{margin-bottom:9px}.explanation-title h2{font-size:18px}.explanation-title>span{font-size:9px}.faq-trigger{font-size:12px;padding:16px 0}.faq-inner{font-size:11px}.formula{font-size:11px;padding:9px 12px}.policy-grid{gap:9px}.policy-grid>div{padding:12px}.policy-grid strong{font-size:12px}.policy-grid p{font-size:10px}.footer{padding:20px 5px 23px;font-size:8px}.footer>div{font-size:8px;margin-top:7px}.eligibility-panel{margin-top:15px;padding:12px}.eligibility-label{font-size:11px;align-items:center}.eligibility-panel>p{font-size:10px}.dialog{max-height:calc(100dvh - 30px);margin:auto auto 0;width:100%;max-width:none;border-radius:26px 26px 0 0;padding:23px 25px max(25px,env(safe-area-inset-bottom));border-bottom:0}.dialog h2{font-size:25px}.dialog-description{font-size:11px}.dialog-actions{gap:10px}.dialog-actions .primary-button{font-size:11px;gap:8px;padding-inline:15px}.secondary-button{font-size:10px}.details-dialog{padding-bottom:max(25px,env(safe-area-inset-bottom))}.toast{bottom:max(25px,env(safe-area-inset-bottom));max-width:calc(100% - 30px);font-size:11px}.arc-one{width:240vw;height:200vw;left:-100vw;top:44vh}.orb-one{width:140vw;height:140vw;left:-110vw;top:36vh}}
+@media(max-width:360px){.shell{width:calc(100% - 24px)}.toolbar{gap:8px}.vehicle-switch{width:140px}.date-control{padding:8px 7px;gap:3px}.date-control input{width:94px}.date-control>.icon{width:13px;height:13px}.calculator-panel{padding-inline:20px}.field{grid-template-columns:90px minmax(0,1fr);gap:8px}.field label{font-size:12px}.money-input input{font-size:20px}.tag{font-size:8px}.brand{font-size:13px}.brand-icon{width:21px;height:21px}.navbar{padding-inline:14px}.nav-links{right:44px}.hero h1{font-size:29px}.secondary-amount strong{font-size:32px}.primary-amount{font-size:42px}.primary-amount.compact{font-size:31px}.subsidy-switch button{font-size:9px;padding-inline:7px}}
+@media(hover:none){.interactive-glass:hover{--lift:0px}.glass:hover:after{opacity:0}.glass.is-pressed:after{opacity:.8}.money-input:hover{background:#f0f3f85c;border-color:#b4c0d54f}}
+@supports not (backdrop-filter:blur(10px)){.glass{background:#f4f8ffed}.navbar{background:#eaf1fbea}.primary-button{background:#dcecff}.dialog::backdrop{background:#41577760}}
+@media(prefers-reduced-transparency:reduce){.glass{background:#f3f7fd;-webkit-backdrop-filter:none;backdrop-filter:none}.primary-button{background:#dcecff}.dialog::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none;background:#41577760}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;transition-delay:0ms!important}.js .reveal{opacity:1;transform:none!important;filter:none}.interactive-glass{transform:none!important}.press-ripple{display:none}}
+
+.field-hint,.tax-rule,.budget-note{color:#737f92}.footer,.footer>div{color:#7b879a}
+/* Independent quote panels retain the original surface and spacing. */
+.vehicle-panels{position:relative;isolation:isolate;overflow:hidden;transition:height .4s var(--ease)}
+.vehicle-panel{position:absolute;inset:0 0 auto;width:100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(16px)}
+.vehicle-panels:not([data-ready]) .vehicle-panel.is-active{position:relative}
+.vehicle-panels[data-ready] .vehicle-panel{transition:opacity .24s ease,transform .38s var(--ease),visibility .38s}
+.vehicle-panel.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);z-index:2}
+.vehicle-panel.is-leaving{opacity:0;visibility:visible;pointer-events:none;transform:translateY(-10px);z-index:1}
+.result-section{isolation:isolate}
+.result-section.vehicle-changing{animation:result-arrival .38s var(--ease)}
+.result-section.date-updated:after{content:"";position:absolute;inset:-10px 10px;border-radius:20px;pointer-events:none;z-index:-1;animation:result-date-pulse .8s ease-out}
+.date-control time{font-size:13px;white-space:nowrap;letter-spacing:.01em;font-variant-numeric:tabular-nums;min-width:128px;text-align:center}
+.date-control.date-updated{animation:date-selection-pulse .75s ease-out}
+.explanation{padding-bottom:34px}
+@keyframes result-arrival{from{opacity:.45;transform:translateY(7px);filter:blur(1.5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes result-date-pulse{0%{background:#dcecff66;box-shadow:inset 0 0 0 1px #70aeef50}100%{background:transparent;box-shadow:inset 0 0 0 1px transparent}}
+@keyframes date-selection-pulse{0%{box-shadow:0 0 0 4px #84bafa55,inset 0 1px 2px #fff}100%{box-shadow:0 8px 25px -10px #33527e3d,inset 0 1px 1px #fff}}
+/* One-click date selection; the calendar is a transient control layer. */
+.date-dialog{position:fixed;margin:0;width:310px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:17px;border:1px solid #fff;border-radius:23px;background:#f9fbfff5;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 18px 65px #3f5c8830,0 3px 12px #7087a620;color:var(--ink);overflow:auto}
+.date-dialog[open]{animation:calendar-in .2s var(--ease)}
+.date-dialog::backdrop{background:#293d5a05;backdrop-filter:none;-webkit-backdrop-filter:none}
+.calendar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.calendar-nav{height:30px;width:30px;padding:0;display:grid;place-items:center;border-radius:50%;flex-shrink:0;background:#fff9}
+.calendar-nav>.icon{width:15px;height:15px}
+#calendar-previous>.icon{transform:rotate(180deg)}
+.calendar-nav:disabled{opacity:.25}
+.calendar-selects{display:flex;align-items:center;justify-content:center;gap:5px}
+.calendar-selects select{font:inherit;font-size:13px;font-weight:550;color:#35455c;background:transparent;border:0;max-width:84px;padding:5px 0;border-radius:6px;cursor:pointer;outline-offset:2px}
+.calendar-grid{display:grid;gap:3px}
+.calendar-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.calendar-weekdays{color:#97a1b1;font-size:10px;text-align:center;margin-bottom:7px;line-height:22px}
+.calendar-cell{min-width:0;text-align:center}
+.calendar-day{position:relative;isolation:isolate;width:100%;min-height:34px;border-radius:10px;background:transparent;padding:5px 0;font-size:12px;font-variant-numeric:tabular-nums;color:#5c6a7e;transition:background .16s,transform .2s var(--spring),color .16s}
+.calendar-day:hover{background:#e9f1fc;color:#1c68c4;transform:translateY(-1px)}
+.calendar-day:active{transform:scale(.9);background:#d8e8fe}
+.calendar-day.is-today:after{content:"";position:absolute;width:3px;height:3px;bottom:3px;left:calc(50% - 1.5px);border-radius:50%;background:#6a9edc}
+.calendar-day.is-selected{background:#237cee;color:#fff;box-shadow:inset 0 1px 1px #ffffff40,0 3px 7px #237cee22;font-weight:600}
+.calendar-day.is-selected.is-today:after{background:#fff}
+.calendar-day:focus-visible{outline-width:2px;outline-offset:1px}
+.calendar-footer{display:flex;justify-content:flex-end;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
+.calendar-footer button{background:transparent;color:var(--blue);border-radius:7px;padding:5px 9px;font-size:11px}
+.calendar-footer button:hover{background:#eaf2fc}
+@keyframes calendar-in{from{opacity:0;transform:translateY(-5px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:780px){.date-control time{font-size:11px;min-width:115px}}
+@media(max-width:600px){.date-control>.date-label{display:none}.date-control time{font-size:10px;min-width:113px}.result-section.date-updated:after{inset:10px -10px -7px}.explanation{padding-bottom:28px}}
+@media(max-width:360px){.date-control time{font-size:10px;min-width:94px}}
+@media(prefers-reduced-motion:reduce){.vehicle-panels,.vehicle-panel{transition:none!important}.result-section.vehicle-changing,.result-section.date-updated:after,.date-control.date-updated,.date-dialog[open]{animation:none!important}}
+
+</style>
+  <script>document.documentElement.classList.add('js');setTimeout(function(){if(!document.documentElement.dataset.ready)document.documentElement.classList.remove('js')},1800);</script>
+  
+  
+  
+</head>
+<body>
+  <a class="skip-link" href="#original">直接填写购车信息</a>
+  <div class="ambient" aria-hidden="true"><div class="ambient-orb orb-one"></div><div class="ambient-orb orb-two"></div><div class="ambient-arc arc-one"></div><div class="ambient-arc arc-two"></div></div>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="m5 8 1.5-4h11L19 8M4 8h16a1 1 0 0 1 1 1v9H3V9a1 1 0 0 1 1-1Z"/><path d="M5 18v2m14-2v2M6 12h2m8 0h2M9 15h6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18m-13 4h1m5 0h1m-7 3h1"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.01"/></symbol>
+  </defs></svg>
+  <header class="header shell reveal" style="--delay:0ms">
+    <div class="navbar glass">
+      <a class="brand" href="#top" aria-label="购置税计算器首页"><svg class="icon brand-icon"><use href="#i-car"/></svg><span>购置税</span></a>
+      <nav class="nav-links" aria-label="主导航"><span class="nav-lens" aria-hidden="true"></span><a href="#calculator" class="nav-link interactive-glass active" data-nav="calculator" aria-current="page">计算</a><a href="#explanation" class="nav-link interactive-glass" data-nav="explanation">说明</a></nav>
+      <button class="help-button interactive-glass" id="help" aria-label="查看使用说明"><span aria-hidden="true">?</span></button>
+    </div>
+  </header>
+  <main class="shell" id="top">
+    <section class="hero" aria-labelledby="hero-heading">
+      <p class="eyebrow reveal" style="--delay:70ms">车辆购置税计算器</p>
+      <h1 class="reveal" id="hero-heading" style="--delay:130ms">购车，心中有数<span class="period">。</span></h1>
+      <p class="hero-description reveal" style="--delay:200ms">车价、优惠、补贴与购置税，<span>一次算清。</span></p>
+    </section>
+    <section id="calculator" class="calculator" aria-label="车辆购置税计算">
+      <div class="toolbar reveal" style="--delay:260ms">
+        <div class="vehicle-switch glass interactive-glass" role="tablist" aria-label="车辆类型"><span class="segment-lens" aria-hidden="true"></span><button type="button" id="fuel-tab" class="segment-button active" data-vehicle="fuel" role="tab" aria-selected="true" aria-controls="fuel-quote-panel"><span class="selection-dot" aria-hidden="true"></span>燃油车</button><button type="button" id="nev-tab" class="segment-button" data-vehicle="nev" role="tab" aria-selected="false" aria-controls="nev-quote-panel" tabindex="-1"><svg class="icon leaf-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4c-8-1-14 2-14 8a6 6 0 0 0 6 6c6 0 9-6 8-14Z"/><path d="m5 20 9-10"/></svg>新能源</button></div>
+        <button type="button" id="date-button" class="date-control glass interactive-glass" aria-label="选择开票日期" aria-haspopup="dialog" aria-expanded="false" aria-controls="date-dialog"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span class="date-label">开票日期</span><time id="selected-date" datetime="2026-11-03">2026 / 11 / 03</time></button>
+      </div>
+      <p id="date-error" class="date-error" role="alert" hidden></p>
+      <div class="calculator-panel reveal" style="--delay:320ms">
+        <section class="input-section" aria-labelledby="form-heading">
+          <div class="section-heading"><h2 id="form-heading"><span id="vehicle-heading-type">燃油车</span>购车信息</h2><button type="button" id="reset" class="text-button muted-button">重置</button></div>
+          <div class="vehicle-panels" id="vehicle-panels">
+          <div class="vehicle-panel is-active" id="fuel-quote-panel" role="tabpanel" aria-labelledby="fuel-tab" data-vehicle-panel="fuel">
+          <form id="car-form" novalidate autocomplete="off">
+            <div class="field" data-field="original"><label for="original">车辆原价 <span class="tag">含税</span></label><div class="money-input"><span aria-hidden="true">¥</span><input id="original" name="original" type="text" inputmode="decimal" value="200,000" maxlength="20" aria-describedby="original-error" spellcheck="false"><span class="field-focus" aria-hidden="true"></span></div><p id="original-error" class="field-error" hidden></p></div>
+            <div class="field" data-field="discount"><label for="discount">现金优惠</label><div class="money-input"><span aria-hidden="true">¥</span><input id="discount" name="discount" type="text" inputmode="decimal" value="20,000" maxlength="20" aria-describedby="discount-error" spellcheck="false"><span class="field-focus" aria-hidden="true"></span></div><p id="discount-error" class="field-error" hidden></p></div>
+            <div class="field" data-field="subsidy"><label for="subsidy">置换补贴</label><div class="money-input"><span aria-hidden="true">¥</span><input id="subsidy" name="subsidy" type="text" inputmode="decimal" value="10,000" maxlength="20" aria-describedby="subsidy-hint subsidy-error" spellcheck="false"><span class="field-focus" aria-hidden="true"></span></div><p id="subsidy-error" class="field-error" hidden></p></div>
+            <div class="subsidy-settings"><span class="small-label">补贴方式</span><div class="subsidy-switch" role="group" aria-label="补贴方式"><span class="subsidy-lens" aria-hidden="true"></span><button type="button" class="active" data-subsidy="rebate" aria-pressed="true">购后返还</button><button type="button" data-subsidy="invoice" aria-pressed="false">抵扣开票价</button></div></div>
+            <p class="field-hint" id="subsidy-hint">补贴到账后抵减购车支出，不抵减计税价格。</p>
+            <div class="eligibility-panel" id="eligibility-panel" hidden><label class="eligibility-label"><input id="nev-eligible" type="checkbox"><span class="checkbox-visual" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><span>已确认符合新能源减免条件</span></label><p>请核实车型列入开票日期适用的减免税目录。未确认时按全额税款测算。</p></div>
+          </form>
+          <div class="invoice-summary"><div><span id="invoice-label">预计开票价</span><span class="invoice-status" id="invoice-status" hidden>已调整</span></div><div class="invoice-value"><strong id="invoice-amount">¥180,000</strong><button class="text-button" id="adjust-invoice" data-adjust-invoice type="button">调整</button></div></div>
+          </div>
+          </div>
+        </section>
+        <section class="result-section" aria-labelledby="result-heading">
+          <div class="section-heading result-heading"><h2 id="result-heading">补贴后支出</h2><span class="live-status"><span></span>实时更新</span></div>
+          <div class="primary-amount" id="budget-display"><span class="primary-currency">¥</span><span id="budget-amount">185,929.20</span></div>
+          <p class="budget-note">未含保险、上牌费及旧车出售收入</p>
+          <div class="breakdown" aria-label="购车支出明细"><div><span id="price-row-label">优惠后车价</span><span id="price-result">¥180,000.00</span></div><div><span>车辆购置税</span><span id="tax-result">+ ¥15,929.20</span></div><div class="relief-row" id="relief-row" hidden><span>已享新能源减免</span><span id="relief-result"></span></div><div><span id="subsidy-row-label">置换补贴</span><span id="subsidy-result">− ¥10,000.00</span></div></div>
+          <div class="secondary-result"><span class="secondary-label">预计购置税</span><div class="secondary-amount" id="tax-display"><span>¥</span><strong id="tax-amount">15,929.20</strong></div><p class="tax-rule" id="tax-rule">燃油车 · 税率 10%</p><p class="policy-note" id="policy-note" hidden></p></div>
+          <div class="result-actions"><button type="button" class="primary-button glass interactive-glass" id="show-details"><span>计算明细</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+          <p id="calculation-error" class="calculation-error" role="alert" hidden></p>
+          <p id="result-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+        </section>
+      </div>
+    </section>
+    <section class="explanation" id="explanation" aria-labelledby="explanation-heading">
+      <div class="explanation-title reveal"><h2 id="explanation-heading">计算说明</h2></div>
+      <article class="faq-item reveal"><h3><button class="faq-trigger" aria-expanded="false" aria-controls="faq-tax">购置税如何计算？<span class="plus" aria-hidden="true"></span></button></h3><div class="faq-body" id="faq-tax" inert><div class="faq-inner"><p>境内购买自用新乘用车，通常以销售发票的不含增值税价格作为计税价格，购置税税率为 10%。本工具按增值税税率 13% 换算。</p><div class="formula">购置税 = 含税开票价 ÷ 1.13 × 10%</div><p>示例：含税开票价 180,000 元，计税价约 159,292.04 元，购置税约 15,929.20 元。各步骤保留两位小数；实际以发票及税务核定为准。<a href="https://jiangsu.chinatax.gov.cn/art/2026/4/20/art_21737_961.html" target="_blank" rel="noopener noreferrer" class="inline-link">查看税务说明 ↗</a></p></div></div></article>
+      <article class="faq-item reveal"><h3><button class="faq-trigger" aria-expanded="false" aria-controls="faq-subsidy">优惠与补贴如何计入？<span class="plus" aria-hidden="true"></span></button></h3><div class="faq-body" id="faq-subsidy" inert><div class="faq-inner"><p><strong>现金优惠：</strong>填写已反映在发票车价中的优惠。预计开票价 = 车辆原价 − 现金优惠。</p><p><strong>购后返还：</strong>补贴到账后用于抵减购车支出，计税价格仍依据购车发票确定。</p><p><strong>抵扣开票价：</strong>仅在补贴确已降低发票上的实际车辆价款时选择。此金额计入开票价扣减，支出中不再重复扣减。</p><p>补贴金额请按已确认可获得的金额填写；本工具不自动判断置换资格或套用地方补贴政策。可通过“调整”直接使用实际含税开票价。</p></div></div></article>
+      <article class="faq-item reveal"><h3><button class="faq-trigger" aria-expanded="false" aria-controls="faq-nev">新能源有哪些减免？<span class="plus" aria-hidden="true"></span></button></h3><div class="faq-body" id="faq-nev" inert><div class="faq-inner"><p>符合条件、列入开票日期适用减免税目录的新能源乘用车（最多 9 座），适用以下政策。开票日期决定适用期间。</p><div class="policy-grid"><div><span class="policy-year">2024—2025</span><strong>免征，设有上限</strong><p>每辆新能源乘用车免税额不超过 30,000 元，超过部分仍需缴纳。</p></div><div><span class="policy-year">2026—2027</span><strong>减半，设有上限</strong><p>减税额为原应纳税额的 50%，每辆新能源乘用车最多减税 15,000 元。</p></div></div><p>2026 年起需符合更新后的技术要求及目录。请确认资格后勾选减免选项。<a class="inline-link" href="https://fgk.chinatax.gov.cn/zcfgk/c102416/c5207352/content.html" target="_blank" rel="noopener noreferrer">查看减免政策 ↗</a> <a class="inline-link" href="https://www.miit.gov.cn/jgsj/zbys/wjfb/art/2025/art_1b43c010cb824f9ab7fedaba2750934d.html" target="_blank" rel="noopener noreferrer">2026—2027 年要求 ↗</a></p></div></div></article>
+    </section>
+  </main>
+  <dialog id="date-dialog" class="date-dialog" aria-labelledby="calendar-heading"><div class="calendar-header"><button type="button" id="calendar-previous" class="calendar-nav glass interactive-glass" aria-label="上个月"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button><div class="calendar-selects" id="calendar-heading"><select id="calendar-year" aria-label="年份"><option value="2024">2024年</option><option value="2025">2025年</option><option value="2026">2026年</option><option value="2027">2027年</option></select><select id="calendar-month" aria-label="月份"><option value="0">1月</option><option value="1">2月</option><option value="2">3月</option><option value="3">4月</option><option value="4">5月</option><option value="5">6月</option><option value="6">7月</option><option value="7">8月</option><option value="8">9月</option><option value="9">10月</option><option value="10">11月</option><option value="11">12月</option></select></div><button type="button" id="calendar-next" class="calendar-nav glass interactive-glass" aria-label="下个月"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div><div class="calendar-grid" id="calendar-grid" role="grid" aria-label="选择日期"></div><div class="calendar-footer"><button type="button" id="calendar-today">今天</button></div></dialog>
+  <dialog id="invoice-dialog" class="dialog invoice-dialog" aria-labelledby="invoice-dialog-heading"><div class="dialog-top"><span class="dialog-eyebrow">以发票为准</span><button type="button" class="close-button glass interactive-glass" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><h2 id="invoice-dialog-heading">调整开票价</h2><p class="dialog-description">填写机动车销售发票的价税合计。此金额将替代根据原价和优惠推算的开票价。</p><form id="invoice-form" novalidate><label for="actual-invoice" class="dialog-label">实际开票价（含税）</label><div class="money-input dialog-money"><span aria-hidden="true">¥</span><input id="actual-invoice" type="text" inputmode="decimal" maxlength="20" aria-describedby="actual-invoice-error" spellcheck="false"></div><p id="actual-invoice-error" class="field-error" hidden></p><p class="invoice-dialog-hint">之后修改其他金额时，仍使用此开票价，直至恢复自动计算。</p><div class="dialog-actions"><button type="button" id="restore-invoice" class="secondary-button">恢复自动计算</button><button type="submit" class="primary-button glass interactive-glass">使用此金额<svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></button></div></form></dialog>
+  <dialog id="details-dialog" class="dialog details-dialog" aria-labelledby="details-heading"><div class="dialog-top"><span class="dialog-eyebrow">每一步，清晰可见。</span><button type="button" class="close-button glass interactive-glass" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><h2 id="details-heading">计算明细</h2><div class="detail-steps"><div><span class="step-index">01</span><div><h3>确定开票价</h3><p id="detail-invoice"></p></div></div><div><span class="step-index">02</span><div><h3>剔除增值税</h3><p id="detail-base"></p></div></div><div><span class="step-index">03</span><div><h3>计算购置税</h3><p id="detail-tax"></p><p class="detail-relief" id="detail-relief" hidden></p></div></div><div><span class="step-index">04</span><div><h3>计入购后补贴</h3><p id="detail-budget"></p></div></div></div><div class="detail-total"><span>补贴后支出</span><strong id="detail-total"></strong></div><p class="dialog-footnote">各步骤四舍五入到分。未含保险、上牌费和旧车出售收入。</p><button type="button" class="primary-button glass interactive-glass copy-button" id="copy-result"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>复制计算结果</span></button></dialog>
+  <div class="toast" role="status" aria-live="polite" id="toast"></div>
+  <noscript><div class="noscript-message">请启用 JavaScript 以使用实时计算功能。当前页面中的金额仅为示例。</div></noscript>
+<script>
+/* Amounts are integer CNY cents. Each displayed calculation is rounded to cents. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.TaxModel = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const MAX_CENTS = 10000000000;
+  function roundRatio(value, numerator, denominator) {
+    const n = BigInt(value) * BigInt(numerator);
+    const d = BigInt(denominator);
+    return Number((n + d / 2n) / d);
+  }
+  function parseMoney(value, optional = false) {
+    const text = String(value ?? '').trim().replace(/[,，]/g, '');
+    if (text === '' && optional) return 0;
+    if (!/^\d+(?:\.\d{1,2})?$/.test(text)) return null;
+    const [whole, fraction = ''] = text.split('.');
+    const cents = BigInt(whole) * 100n + BigInt(fraction.padEnd(2, '0'));
+    return cents <= BigInt(MAX_CENTS) ? Number(cents) : null;
+  }
+  function calculate(input) {
+    const errors = {};
+    const original = parseMoney(input.original);
+    const discount = parseMoney(input.discount, true);
+    const subsidy = parseMoney(input.subsidy, true);
+    const override = input.invoiceOverride === null || input.invoiceOverride === undefined
+      ? null : parseMoney(input.invoiceOverride);
+    if (original === null || original <= 0) errors.original = '请输入大于 0 的车价，最多两位小数，上限一亿元。';
+    if (discount === null) errors.discount = '请输入有效的优惠金额，最多两位小数。';
+    if (subsidy === null) errors.subsidy = '请输入有效的补贴金额，最多两位小数。';
+    if (input.invoiceOverride !== null && input.invoiceOverride !== undefined && (override === null || override <= 0)) errors.invoiceOverride = '实际开票价须大于 0，最多两位小数。';
+    if (!['fuel', 'nev'].includes(input.vehicle)) errors.vehicle = '请选择车辆类型。';
+    if (!['rebate', 'invoice'].includes(input.subsidyMode)) errors.subsidyMode = '请选择补贴方式。';
+    const date = String(input.date || '');
+    const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(date + 'T00:00:00Z') : null;
+    if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date || date < '2024-01-01' || date > '2027-12-31') errors.date = '请选择 2024 年至 2027 年之间的有效开票日期。';
+    if (original !== null && discount !== null && discount >= original) errors.discount = '现金优惠须小于车辆原价。';
+    const expectedInvoice = original !== null && discount !== null && subsidy !== null
+      ? original - discount - (input.subsidyMode === 'invoice' ? subsidy : 0) : null;
+    if (input.subsidyMode === 'invoice' && expectedInvoice !== null && expectedInvoice <= 0) errors.subsidy = '抵扣优惠与补贴后的开票价须大于 0。';
+    const invoice = override === null ? expectedInvoice : override;
+    const rebate = input.subsidyMode === 'rebate' ? subsidy : 0;
+    if (rebate !== null && invoice !== null && invoice > 0 && rebate > invoice) errors.subsidy = '购后返还补贴不能高于开票金额。';
+    if (Object.keys(errors).length) return { valid: false, errors };
+    const base = roundRatio(invoice, 100, 113);
+    const grossTax = roundRatio(base, 1, 10);
+    const year = Number(date.slice(0, 4));
+    let relief = 0;
+    let policy = 'fuel';
+    if (input.vehicle === 'nev') {
+      policy = input.eligible === true ? (year <= 2025 ? 'nev-exempt' : 'nev-half') : 'nev-unconfirmed';
+      if (policy === 'nev-exempt') relief = Math.min(grossTax, 3000000);
+      if (policy === 'nev-half') relief = Math.min(roundRatio(grossTax, 1, 2), 1500000);
+    }
+    const tax = grossTax - relief;
+    return { valid: true, original, discount, subsidy, expectedInvoice, invoice, base, grossTax, relief, tax, rebate, budget: invoice + tax - rebate, policy, year, manual: override !== null, subsidyMode: input.subsidyMode, date };
+  }
+  function format(cents, digits = 2) {
+    return (cents / 100).toLocaleString('zh-CN', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+  return { calculate, parseMoney, roundRatio, format, MAX_CENTS };
+});
+
+</script>
+<script>
+(function (root) {
+  'use strict';
+  const pad = (n) => String(n).padStart(2, '0');
+  const iso = (year, month, day) => `${year}-${pad(month + 1)}-${pad(day)}`;
+  const fromISO = (value) => { const [year, month, day] = value.split('-').map(Number); return { year, month: month - 1, day }; };
+  const monthDays = (year, month) => new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+  const weekdays = ['一', '二', '三', '四', '五', '六', '日'];
+  root.VehicleTaxCalendar = function ({ button, dialog, initialDate, today, onChange }) {
+    const yearSelect = dialog.querySelector('#calendar-year');
+    const monthSelect = dialog.querySelector('#calendar-month');
+    const previous = dialog.querySelector('#calendar-previous');
+    const next = dialog.querySelector('#calendar-next');
+    const grid = dialog.querySelector('#calendar-grid');
+    const todayButton = dialog.querySelector('#calendar-today');
+    const dateLabel = button.querySelector('time');
+    let selected = initialDate;
+    let cursor = selected;
+    let view = fromISO(selected);
+    const min = '2024-01-01';
+    const max = '2027-12-31';
+    function syncLabel() {
+      dateLabel.textContent = selected.replaceAll('-', ' / ');
+      dateLabel.dateTime = selected;
+      button.setAttribute('aria-label', `开票日期：${selected}，选择日期`);
+    }
+    function focusCursor() {
+      requestAnimationFrame(() => dialog.querySelector(`[data-date="${cursor}"]`)?.focus({ preventScroll: true }));
+    }
+    function render() {
+      yearSelect.value = String(view.year);
+      monthSelect.value = String(view.month);
+      previous.disabled = view.year === 2024 && view.month === 0;
+      next.disabled = view.year === 2027 && view.month === 11;
+      grid.setAttribute('aria-label', `${view.year}年${view.month + 1}月`);
+      const fragment = document.createDocumentFragment();
+      const header = document.createElement('div');
+      header.className = 'calendar-week calendar-weekdays'; header.setAttribute('role', 'row');
+      for (const text of weekdays) {
+        const cell = document.createElement('span'); cell.textContent = text;
+        cell.setAttribute('role', 'columnheader'); header.append(cell);
+      }
+      fragment.append(header);
+      const offset = (new Date(Date.UTC(view.year, view.month, 1)).getUTCDay() + 6) % 7;
+      const count = monthDays(view.year, view.month);
+      const total = Math.ceil((offset + count) / 7) * 7;
+      for (let index = 0; index < total; index++) {
+        if (index % 7 === 0) {
+          const row = document.createElement('div'); row.className = 'calendar-week'; row.setAttribute('role', 'row'); fragment.append(row);
+        }
+        const cell = document.createElement('div'); cell.className = 'calendar-cell'; cell.setAttribute('role', 'gridcell');
+        const day = index - offset + 1;
+        if (day >= 1 && day <= count) {
+          const value = iso(view.year, view.month, day);
+          const dayButton = document.createElement('button');
+          dayButton.type = 'button'; dayButton.className = 'calendar-day'; dayButton.textContent = String(day); dayButton.dataset.date = value;
+          dayButton.setAttribute('aria-label', `${view.year}年${view.month + 1}月${day}日`);
+          dayButton.tabIndex = value === cursor ? 0 : -1;
+          cell.setAttribute('aria-selected', String(value === selected));
+          if (value === selected) dayButton.classList.add('is-selected');
+          if (value === today) { dayButton.classList.add('is-today'); dayButton.setAttribute('aria-current', 'date'); }
+          dayButton.addEventListener('click', () => commit(value));
+          cell.append(dayButton);
+        } else cell.setAttribute('aria-disabled', 'true');
+        fragment.lastChild.append(cell);
+      }
+      grid.replaceChildren(fragment);
+    }
+    function position() {
+      const rect = button.getBoundingClientRect();
+      const width = dialog.offsetWidth;
+      const height = dialog.offsetHeight;
+      let top = rect.bottom + 10;
+      if (top + height > root.innerHeight - 12 && rect.top - height - 10 >= 12) top = rect.top - height - 10;
+      dialog.style.left = `${Math.max(12, Math.min(rect.right - width, root.innerWidth - width - 12))}px`;
+      dialog.style.top = `${Math.max(12, Math.min(top, root.innerHeight - height - 12))}px`;
+    }
+    function close() {
+      if (dialog.open) dialog.close();
+      button.setAttribute('aria-expanded', 'false');
+      if (!document.querySelector('dialog[open]')) document.body.classList.remove('is-dialog-open');
+    }
+    function open() {
+      if (dialog.open) return;
+      cursor = selected; view = fromISO(selected); render();
+      document.body.classList.add('is-dialog-open');
+      dialog.showModal(); position(); button.setAttribute('aria-expanded', 'true'); focusCursor();
+    }
+    function commit(value) {
+      if (value < min || value > max) return;
+      const changed = value !== selected;
+      selected = value; syncLabel(); close();
+      button.focus({ preventScroll: true });
+      onChange(value, changed);
+    }
+    function moveMonth(amount, focus = false) {
+      const d = new Date(Date.UTC(view.year, view.month + amount, 1));
+      const year = d.getUTCFullYear(); const month = d.getUTCMonth();
+      if (year < 2024 || year > 2027) return;
+      const day = Math.min(fromISO(cursor).day, monthDays(year, month));
+      view = { year, month, day }; cursor = iso(year, month, day); render(); position();
+      if (focus) focusCursor();
+    }
+    button.addEventListener('click', open);
+    button.addEventListener('keydown', (event) => { if (event.key === 'ArrowDown') { event.preventDefault(); open(); } });
+    previous.addEventListener('click', () => moveMonth(-1));
+    next.addEventListener('click', () => moveMonth(1));
+    function selectMonth() {
+      const year = Number(yearSelect.value), month = Number(monthSelect.value);
+      const day = Math.min(fromISO(cursor).day, monthDays(year, month));
+      view = { year, month, day }; cursor = iso(year, month, day); render(); position();
+    }
+    yearSelect.addEventListener('change', selectMonth); monthSelect.addEventListener('change', selectMonth);
+    todayButton.disabled = today < min || today > max;
+    todayButton.addEventListener('click', () => commit(today));
+    dialog.addEventListener('cancel', (event) => { event.preventDefault(); close(); });
+    dialog.addEventListener('close', () => { button.setAttribute('aria-expanded', 'false'); if (!document.querySelector('dialog[open]')) document.body.classList.remove('is-dialog-open'); });
+    dialog.addEventListener('click', (event) => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) close();
+    });
+    grid.addEventListener('keydown', (event) => {
+      const target = event.target.closest('[data-date]'); if (!target) return;
+      const steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+      const current = fromISO(target.dataset.date);
+      if (event.key === 'PageUp' || event.key === 'PageDown') { event.preventDefault(); moveMonth(event.key === 'PageUp' ? -1 : 1, true); return; }
+      let delta = steps[event.key];
+      const weekday = (new Date(Date.UTC(current.year, current.month, current.day)).getUTCDay() + 6) % 7;
+      if (event.key === 'Home') delta = -weekday;
+      if (event.key === 'End') delta = 6 - weekday;
+      if (delta === undefined) return;
+      event.preventDefault();
+      const d = new Date(Date.UTC(current.year, current.month, current.day + delta));
+      const value = iso(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+      if (value < min || value > max) return;
+      cursor = value; view = fromISO(value); render(); position(); focusCursor();
+    });
+    root.addEventListener('resize', () => { if (dialog.open) position(); });
+    syncLabel();
+    return { setValue(value) { selected = value; cursor = value; view = fromISO(value); syncLabel(); if (dialog.open) render(); }, close };
+  };
+})(window);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const M = window.TaxModel;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const storageKey = 'vehicle-tax-glass:v2';
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+  const today = `${parts.year}-${parts.month}-${parts.day}`;
+  const defaults = () => ({ original: '200000', discount: '20000', subsidy: '10000', vehicle: 'fuel', subsidyMode: 'rebate', date: today >= '2024-01-01' && today <= '2027-12-31' ? today : '2026-11-03', eligible: false, invoiceOverride: null });
+  const quoteKeys = ['original', 'discount', 'subsidy', 'subsidyMode', 'eligible', 'invoiceOverride'];
+  const pickQuote = (value) => Object.fromEntries(quoteKeys.map((key) => [key, value[key]]));
+  let state = defaults();
+  const quotes = { fuel: pickQuote(defaults()), nev: pickQuote(defaults()) };
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || localStorage.getItem('vehicle-tax-glass:v1'));
+    if (saved && typeof saved === 'object') {
+      const candidate = { ...state };
+      for (const key of ['original', 'discount', 'subsidy', 'date', 'vehicle', 'subsidyMode', 'invoiceOverride']) {
+        if (typeof saved[key] === 'string' && saved[key].length <= 24) candidate[key] = saved[key];
+      }
+      candidate.eligible = saved.eligible === true;
+      if (M.calculate(candidate).valid) {
+        state = candidate;
+        quotes[state.vehicle] = pickQuote(state);
+        if (saved.quotes && typeof saved.quotes === 'object') {
+          for (const kind of ['fuel', 'nev']) {
+            const stored = saved.quotes[kind]; if (!stored || typeof stored !== 'object') continue;
+            const restored = { ...defaults(), vehicle: kind, date: state.date };
+            for (const key of ['original', 'discount', 'subsidy', 'subsidyMode', 'invoiceOverride']) {
+              if (typeof stored[key] === 'string' && stored[key].length <= 24) restored[key] = stored[key];
+            }
+            restored.eligible = stored.eligible === true;
+            if (M.calculate(restored).valid) quotes[kind] = pickQuote(restored);
+          }
+          state = { ...state, ...quotes[state.vehicle] };
+        }
+      }
+    }
+  } catch (_) { /* Browser-local persistence is optional. */ }
+  const wrapper = $('vehicle-panels');
+  const fuelPanel = $('fuel-quote-panel');
+  const nevPanel = fuelPanel.cloneNode(true);
+  const idMap = new Map();
+  nevPanel.querySelectorAll('[id]').forEach((element) => { idMap.set(element.id, element.id + '-nev'); element.id += '-nev'; });
+  nevPanel.querySelectorAll('[for],[aria-describedby],[aria-labelledby],[aria-controls]').forEach((element) => {
+    for (const name of ['for', 'aria-describedby', 'aria-labelledby', 'aria-controls']) {
+      if (element.hasAttribute(name)) element.setAttribute(name, element.getAttribute(name).split(' ').map((id) => idMap.get(id) || id).join(' '));
+    }
+  });
+  nevPanel.id = 'nev-quote-panel';
+  nevPanel.dataset.vehiclePanel = 'nev';
+  nevPanel.setAttribute('aria-labelledby', 'nev-tab');
+  nevPanel.setAttribute('aria-hidden', 'true');
+  nevPanel.inert = true;
+  nevPanel.classList.remove('is-active');
+  wrapper.append(nevPanel);
+  const panels = { fuel: fuelPanel, nev: nevPanel };
+  const panelElement = (id, kind = state.vehicle) => $(id + (kind === 'nev' ? '-nev' : ''));
+  const quoteFor = (kind) => kind === state.vehicle ? state : quotes[kind];
+  let calendar;
+  let result;
+  let announcementTimer;
+  let toastTimer;
+  let panelExitTimer;
+  let amountAnimations = [];
+  let previousTax;
+  const pulseTimers = new Map();
+  const money = (cents, digits = 2) => M.format(cents, digits);
+  const yuan = (cents, digits = 2) => '¥' + money(cents, digits);
+  const setText = (id, value) => { $(id).textContent = value; };
+  const setPanelText = (id, value) => { panelElement(id).textContent = value; };
+  function save() {
+    try {
+      if (result.valid) {
+        quotes[state.vehicle] = pickQuote(state);
+        localStorage.setItem(storageKey, JSON.stringify({ ...state, quotes }));
+      }
+    } catch (_) {}
+  }
+  function displayInput(id, kind = state.vehicle) {
+    const quote = quoteFor(kind);
+    const cents = M.parseMoney(quote[id], id !== 'original');
+    panelElement(id, kind).value = cents === null ? quote[id] : money(cents, cents % 100 ? 2 : 0);
+  }
+  function hydrate(kind = state.vehicle) {
+    ['original', 'discount', 'subsidy'].forEach((id) => displayInput(id, kind));
+    panelElement('nev-eligible', kind).checked = quoteFor(kind).eligible;
+    calendar?.setValue(state.date);
+  }
+  function updatePanelHeight() {
+    const height = panels[state.vehicle].scrollHeight;
+    if (height && Math.abs(parseFloat(wrapper.style.height || '0') - height) > .5) wrapper.style.height = `${height}px`;
+  }
+  function activateVehiclePanel(animate = true) {
+    clearTimeout(panelExitTimer);
+    for (const [kind, panel] of Object.entries(panels)) {
+      const active = kind === state.vehicle;
+      const wasActive = panel.classList.contains('is-active');
+      panel.classList.remove('is-leaving');
+      panel.classList.toggle('is-active', active);
+      panel.inert = !active;
+      panel.setAttribute('aria-hidden', String(!active));
+      if (animate && !reducedMotion.matches && wasActive && !active) panel.classList.add('is-leaving');
+    }
+    updatePanelHeight();
+    if (!wrapper.dataset.ready) {
+      void wrapper.offsetHeight;
+      wrapper.dataset.ready = 'true';
+    }
+    panelExitTimer = setTimeout(() => Object.values(panels).forEach((panel) => panel.classList.remove('is-leaving')), 400);
+  }
+  function pulseResult(className) {
+    if (reducedMotion.matches) return;
+    const section = document.querySelector('.result-section');
+    clearTimeout(pulseTimers.get(className));
+    section.classList.remove(className); void section.offsetHeight; section.classList.add(className);
+    pulseTimers.set(className, setTimeout(() => section.classList.remove(className), 850));
+  }
+  function switchVehicle(vehicle) {
+    if (vehicle === state.vehicle) return;
+    quotes[state.vehicle] = pickQuote(state);
+    state = { ...state, ...quotes[vehicle], vehicle };
+    hydrate(vehicle);
+    render();
+    activateVehiclePanel();
+    pulseResult('vehicle-changing');
+    if (!reducedMotion.matches) $('form-heading').animate([{ opacity: .3, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 280, easing: 'ease-out' });
+  }
+  function syncControls() {
+    const nev = state.vehicle === 'nev';
+    document.querySelector('.vehicle-switch').dataset.selected = state.vehicle;
+    document.querySelectorAll('[data-vehicle]').forEach((button) => {
+      const active = button.dataset.vehicle === state.vehicle;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-selected', String(active));
+      button.tabIndex = active ? 0 : -1;
+    });
+    setText('vehicle-heading-type', nev ? '新能源' : '燃油车');
+    const activePanel = panels[state.vehicle];
+    activePanel.querySelector('.subsidy-switch').dataset.selected = state.subsidyMode;
+    activePanel.querySelectorAll('[data-subsidy]').forEach((button) => {
+      const active = button.dataset.subsidy === state.subsidyMode;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    panelElement('eligibility-panel', 'fuel').hidden = true;
+    panelElement('eligibility-panel', 'nev').hidden = false;
+    panelElement('nev-eligible').checked = state.eligible;
+    setPanelText('subsidy-hint', state.subsidyMode === 'rebate'
+      ? '补贴到账后抵减购车支出，不抵减计税价格。'
+      : '仅填写已实际降低发票价款的补贴，避免与现金优惠重复。');
+    panelElement('invoice-status').hidden = state.invoiceOverride === null;
+    setPanelText('invoice-label', state.invoiceOverride === null ? '预计开票价' : '实际开票价');
+  }
+  function render(animate = true) {
+    result = M.calculate(state);
+    syncControls();
+    ['original', 'discount', 'subsidy'].forEach((id) => {
+      const error = result.errors?.[id];
+      panelElement(id).setAttribute('aria-invalid', String(!!error));
+      panels[state.vehicle].querySelector(`[data-field="${id}"]`).dataset.invalid = String(!!error);
+      panelElement(id + '-error').hidden = !error;
+      setPanelText(id + '-error', error || '');
+    });
+    const dateError = result.errors?.date;
+    $('date-button').setAttribute('aria-invalid', String(!!dateError));
+    $('date-error').hidden = !dateError;
+    setText('date-error', dateError || '');
+    $('show-details').disabled = !result.valid;
+    $('calculation-error').hidden = result.valid;
+    $('relief-row').hidden = true;
+    $('policy-note').hidden = true;
+    clearTimeout(announcementTimer);
+    if (!result.valid) {
+      for (const id of ['tax-amount', 'budget-amount', 'price-result', 'tax-result', 'subsidy-result']) setText(id, '—');
+      setPanelText('invoice-amount', '—');
+      setText('tax-rule', '修正购车信息后，即可查看计算结果');
+      setText('calculation-error', Object.values(result.errors)[0]);
+      setText('result-announcement', '请修正购车信息后查看结果。' + Object.values(result.errors)[0]);
+      previousTax = undefined;
+      updatePanelHeight();
+      return;
+    }
+    const r = result;
+    setPanelText('invoice-amount', yuan(r.invoice, r.invoice % 100 ? 2 : 0));
+    setText('tax-amount', money(r.tax));
+    setText('budget-amount', money(r.budget));
+    $('tax-display').classList.toggle('compact', money(r.tax).length > 10);
+    $('budget-display').classList.toggle('compact', money(r.budget).length > 10);
+    setText('price-row-label', r.manual ? '实际开票价' : '优惠后车价');
+    setText('price-result', yuan(r.invoice));
+    setText('tax-result', '+ ' + yuan(r.tax));
+    setText('subsidy-row-label', r.subsidyMode === 'rebate' ? '购后返还补贴' : '开票价内补贴');
+    setText('subsidy-result', r.subsidyMode === 'rebate' ? '− ' + yuan(r.rebate) : '已计入车价');
+    const rules = {
+      fuel: '燃油车 · 税率 10%',
+      'nev-unconfirmed': '新能源 · 暂按全额税款测算',
+      'nev-exempt': '新能源 · 免税额上限 ¥30,000',
+      'nev-half': '新能源 · 减半征收 · 减税上限 ¥15,000'
+    };
+    setText('tax-rule', rules[r.policy]);
+    if (r.policy === 'nev-unconfirmed') {
+      $('policy-note').hidden = false;
+      setText('policy-note', '确认车型符合减免条件后，勾选左侧选项。');
+    } else if ((r.policy === 'nev-half' && r.grossTax > 3000000) || (r.policy === 'nev-exempt' && r.grossTax > 3000000)) {
+      $('policy-note').hidden = false;
+      setText('policy-note', '已达到减免限额，超出部分仍需缴纳。');
+    }
+    if (r.relief > 0) {
+      $('relief-row').hidden = false;
+      setText('relief-result', '− ' + yuan(r.relief));
+    }
+    if (animate && previousTax !== undefined && !reducedMotion.matches) {
+      amountAnimations.forEach((animation) => animation.cancel());
+      amountAnimations = [$('budget-display'), $('tax-display')].map((el) => el.animate(
+        [{ opacity: .5, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { duration: 260, easing: 'cubic-bezier(.22,1,.36,1)' }
+      ));
+    }
+    previousTax = r.tax;
+    announcementTimer = setTimeout(() => setText('result-announcement', `开票日期 ${state.date}，补贴后支出 ${money(r.budget)} 元，预计购置税 ${money(r.tax)} 元。`), 650);
+    if ($('details-dialog').open) populateDetails();
+    updatePanelHeight();
+    save();
+  }
+  for (const [kind, panel] of Object.entries(panels)) {
+    for (const id of ['original', 'discount', 'subsidy']) {
+      const input = panelElement(id, kind);
+      input.addEventListener('focus', () => { input.value = String(quoteFor(kind)[id]).replace(/[,，]/g, ''); input.select(); });
+      input.addEventListener('input', () => {
+        if (kind === state.vehicle) { state[id] = input.value; render(); }
+        else quotes[kind][id] = input.value;
+      });
+      input.addEventListener('blur', () => displayInput(id, kind));
+    }
+    panel.querySelector('form').addEventListener('submit', (event) => { event.preventDefault(); if (result.valid) { populateDetails(); showDialog($('details-dialog')); } });
+    panel.querySelectorAll('[data-subsidy]').forEach((button) => button.addEventListener('click', () => { state.subsidyMode = button.dataset.subsidy; render(); }));
+  }
+  calendar = new window.VehicleTaxCalendar({
+    button: $('date-button'), dialog: $('date-dialog'), initialDate: state.date, today,
+    onChange(value) {
+      state.date = value;
+      render();
+      const button = $('date-button');
+      button.classList.remove('date-updated'); void button.offsetHeight; button.classList.add('date-updated');
+      clearTimeout(pulseTimers.get('date-button'));
+      pulseTimers.set('date-button', setTimeout(() => button.classList.remove('date-updated'), 800));
+      pulseResult('date-updated');
+    }
+  });
+  document.querySelectorAll('[data-vehicle]').forEach((button) => button.addEventListener('click', () => switchVehicle(button.dataset.vehicle)));
+  document.querySelector('.vehicle-switch').addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const kind = event.key === 'Home' ? 'fuel' : event.key === 'End' ? 'nev' : state.vehicle === 'fuel' ? 'nev' : 'fuel';
+    switchVehicle(kind); $(kind + '-tab').focus();
+  });
+  panelElement('nev-eligible', 'nev').addEventListener('change', () => { state.eligible = panelElement('nev-eligible', 'nev').checked; render(); });
+  $('reset').addEventListener('click', () => { state = { ...defaults(), vehicle: state.vehicle, date: state.date }; hydrate(); render(); showToast('已重置购车信息'); });
+  document.querySelector('.skip-link').addEventListener('click', (event) => { event.preventDefault(); panelElement('original').focus(); });
+  function showDialog(dialog) {
+    if (dialog.open) return;
+    dialog.classList.remove('is-closing');
+    document.body.classList.add('is-dialog-open');
+    dialog.showModal();
+  }
+  function closeDialog(dialog) {
+    if (!dialog.open || dialog.classList.contains('is-closing')) return;
+    dialog.classList.add('is-closing');
+    setTimeout(() => { dialog.close(); dialog.classList.remove('is-closing'); }, reducedMotion.matches ? 0 : 160);
+  }
+  document.querySelectorAll('dialog:not(#date-dialog)').forEach((dialog) => {
+    dialog.addEventListener('cancel', (event) => { event.preventDefault(); closeDialog(dialog); });
+    dialog.addEventListener('close', () => { if (!document.querySelector('dialog[open]')) document.body.classList.remove('is-dialog-open'); });
+    dialog.addEventListener('click', (event) => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) closeDialog(dialog);
+    });
+    dialog.querySelectorAll('[data-close]').forEach((button) => button.addEventListener('click', () => closeDialog(dialog)));
+  });
+  document.querySelectorAll('[data-adjust-invoice]').forEach((button) => button.addEventListener('click', () => {
+    const amount = state.invoiceOverride !== null ? M.parseMoney(state.invoiceOverride) : (result.valid ? result.invoice : null);
+    $('actual-invoice').value = amount !== null ? money(amount, amount % 100 ? 2 : 0) : '';
+    $('actual-invoice-error').hidden = true;
+    $('actual-invoice').removeAttribute('aria-invalid');
+    showDialog($('invoice-dialog'));
+    requestAnimationFrame(() => { $('actual-invoice').focus(); $('actual-invoice').select(); });
+  }));
+  $('invoice-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const candidate = { ...state, invoiceOverride: $('actual-invoice').value };
+    const next = M.calculate(candidate);
+    if (!next.valid) {
+      setText('actual-invoice-error', next.errors.invoiceOverride || (next.errors.subsidy ? next.errors.subsidy : '请先修正主页面中的购车信息。'));
+      $('actual-invoice-error').hidden = false;
+      $('actual-invoice').setAttribute('aria-invalid', 'true');
+      return;
+    }
+    state = candidate;
+    render();
+    closeDialog($('invoice-dialog'));
+    setTimeout(() => showToast('已按实际开票价更新'), 180);
+  });
+  $('restore-invoice').addEventListener('click', () => { state.invoiceOverride = null; render(); closeDialog($('invoice-dialog')); setTimeout(() => showToast('已恢复自动计算开票价'), 180); });
+  function populateDetails() {
+    if (!result.valid) return;
+    const r = result;
+    setText('detail-invoice', r.manual
+      ? `使用实际含税开票价：${yuan(r.invoice)}`
+      : `${money(r.original)} − ${money(r.discount)}${r.subsidyMode === 'invoice' ? ' − ' + money(r.subsidy) : ''} = ${money(r.invoice)} 元`);
+    setText('detail-base', `${money(r.invoice)} ÷ 1.13 = ${money(r.base)} 元`);
+    setText('detail-tax', `${money(r.base)} × 10% = ${money(r.grossTax)} 元${r.relief ? `；减免后 ${money(r.tax)} 元` : ''}`);
+    $('detail-relief').hidden = !r.relief;
+    setText('detail-relief', r.policy === 'nev-exempt'
+      ? `免税额 = 原应纳税额与 30,000 元中的较小值，本次减免 ${money(r.relief)} 元。`
+      : `减税额 = 原应纳税额的 50% 与 15,000 元中的较小值，本次减免 ${money(r.relief)} 元。`);
+    setText('detail-budget', `${money(r.invoice)} + ${money(r.tax)} − ${money(r.rebate)} = ${money(r.budget)} 元${r.subsidyMode === 'invoice' ? '（置换补贴已计入开票价）' : ''}`);
+    setText('detail-total', yuan(r.budget));
+  }
+  $('show-details').addEventListener('click', () => { if (result.valid) { populateDetails(); showDialog($('details-dialog')); } });
+  $('copy-result').addEventListener('click', async () => {
+    if (!result.valid) return;
+    const r = result;
+    const text = `购车计算结果\n开票日期：${state.date}\n车辆类型：${state.vehicle === 'fuel' ? '燃油车' : '新能源乘用车'}\n含税开票价：${yuan(r.invoice)}\n不含增值税计税价：${yuan(r.base)}\n原应纳税额：${yuan(r.grossTax)}\n新能源减免：${yuan(r.relief)}\n预计购置税：${yuan(r.tax)}\n购后返还补贴：${yuan(r.rebate)}\n补贴后支出：${yuan(r.budget)}\n${r.policy === 'nev-unconfirmed' ? '未确认减免资格，按全额税款测算。\n' : ''}未含保险、上牌费及旧车出售收入。实际税额以发票及税务机关核定为准。`;
+    try {
+      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+      else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text; textarea.style.cssText = 'position:fixed;opacity:0;left:0;top:0';
+        ($('details-dialog').open ? $('details-dialog') : document.body).append(textarea);
+        textarea.select();
+        const copied = document.execCommand('copy');
+        textarea.remove();
+        $('copy-result').focus({ preventScroll: true });
+        if (!copied) throw new Error('Copy unavailable');
+      }
+      showToast('计算结果已复制');
+      $('copy-result').querySelector('span').textContent = '已复制';
+      setTimeout(() => { $('copy-result').querySelector('span').textContent = '复制计算结果'; }, 1800);
+    } catch (_) { showToast('暂时无法复制，可直接选择明细文字'); }
+  });
+  function showToast(message) {
+    const toast = $('toast');
+    (document.querySelector('dialog[open]') || document.body).append(toast);
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.classList.add('visible');
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 2400);
+  }
+  function setFaq(button, expanded) {
+    button.setAttribute('aria-expanded', String(expanded));
+    button.closest('.faq-item').classList.toggle('expanded', expanded);
+    $(button.getAttribute('aria-controls')).inert = !expanded;
+  }
+  document.querySelectorAll('.faq-trigger').forEach((button) => button.addEventListener('click', () => setFaq(button, button.getAttribute('aria-expanded') !== 'true')));
+  $('help').addEventListener('click', () => {
+    const button = document.querySelector('.faq-trigger');
+    setFaq(button, true);
+    $('explanation').scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+    button.focus({ preventScroll: true });
+    setNav('explanation');
+  });
+  function setNav(section) {
+    document.querySelector('.nav-links').dataset.active = section;
+    document.querySelectorAll('[data-nav]').forEach((link) => {
+      const active = link.dataset.nav === section;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+    });
+  }
+  document.querySelectorAll('[data-nav]').forEach((link) => link.addEventListener('click', () => setNav(link.dataset.nav)));
+  let scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if (scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(() => { setNav($('explanation').getBoundingClientRect().top < window.innerHeight * .52 ? 'explanation' : 'calculator'); scrollTick = false; });
+  }, { passive: true });
+  // Specular light tracks the pointer; press and release use a soft spring.
+  document.querySelectorAll('.glass').forEach((element) => {
+    let frame;
+    element.addEventListener('pointermove', (event) => {
+      if (!finePointer.matches || reducedMotion.matches || frame) return;
+      frame = requestAnimationFrame(() => {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        element.style.setProperty('--glow-x', `${x}px`);
+        element.style.setProperty('--glow-y', `${y}px`);
+        if (element.classList.contains('interactive-glass')) {
+          element.style.setProperty('--rx', `${-(y / rect.height - .5) * 2}deg`);
+          element.style.setProperty('--ry', `${(x / rect.width - .5) * 2.5}deg`);
+        }
+        frame = null;
+      });
+    }, { passive: true });
+    element.addEventListener('pointerleave', () => {
+      if (frame) { cancelAnimationFrame(frame); frame = null; }
+      element.style.setProperty('--rx', '0deg'); element.style.setProperty('--ry', '0deg');
+      element.style.removeProperty('--glow-x'); element.style.removeProperty('--glow-y');
+    });
+  });
+  document.querySelectorAll('.interactive-glass').forEach((element) => {
+    function press(event) {
+      if (element.disabled) return;
+      element.classList.add('is-pressed');
+      if (reducedMotion.matches) return;
+      const rect = element.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'press-ripple'; ripple.setAttribute('aria-hidden', 'true');
+      ripple.style.left = `${event?.clientX !== undefined ? event.clientX - rect.left : rect.width / 2}px`;
+      ripple.style.top = `${event?.clientY !== undefined ? event.clientY - rect.top : rect.height / 2}px`;
+      element.append(ripple);
+      setTimeout(() => ripple.remove(), 650);
+    }
+    const release = () => element.classList.remove('is-pressed');
+    element.addEventListener('pointerdown', (event) => { if (event.button === 0 || event.pointerType === 'touch') press(event); });
+    ['pointerup', 'pointerleave', 'pointercancel', 'lostpointercapture'].forEach((name) => element.addEventListener(name, release));
+    element.addEventListener('keydown', (event) => { if ((event.key === ' ' || event.key === 'Enter') && !event.repeat && event.target.tagName !== 'INPUT') press(); });
+    element.addEventListener('keyup', release);
+    element.addEventListener('blur', release, true);
+  });
+  // Content stays visible when scripting, motion, or observer support is absent.
+  function reveal() {
+    const items = document.querySelectorAll('.reveal');
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) { items.forEach((element) => element.classList.add('is-visible')); return; }
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    }), { threshold: .06, rootMargin: '0px 0px -12px 0px' });
+    items.forEach((element) => observer.observe(element));
+  }
+  hydrate('fuel');
+  hydrate('nev');
+  render(false);
+  activateVehiclePanel(false);
+  if ('ResizeObserver' in window) {
+    const panelObserver = new ResizeObserver(updatePanelHeight);
+    Object.values(panels).forEach((panel) => panelObserver.observe(panel));
+  } else window.addEventListener('resize', updatePanelHeight);
+  reveal();
+  document.documentElement.dataset.ready = 'true';
+})();
+
+</script>
+</body>
+</html>
